@@ -14,13 +14,18 @@ spring:
           lower-case-service-id: true
           enabled: true
       routes:
-        - id : after_route
+        - id : user_route
           uri: lb://user-center
           predicates:
-            - TimeBetween=上午7:00,下午5:00
-          filters:
-            - AddRequestHeader=X-Request-Foo, Bar
-            - PreLog=a,b
+            - Path=/users/**
+#            - TimeBetween=上午7:00,下午5:00
+        - id: content_route
+          uri: lb://content-center
+          predicates:
+            - Path=/shares/**,/admin/**
+#          filters:
+#            - AddRequestHeader=X-Request-Foo, Bar
+#            - PreLog=a,b
 management:
   endpoints:
     web:
