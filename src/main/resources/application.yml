@@ -3,29 +3,21 @@ server:
 spring:
   application:
     name: gateway
+  zipkin:
+    base-url: http://localhost:9411/
+    discovery-client-enabled: false
+    sleuth:
+      sampler:
+        #      抽样率不丢失任何数据达到100%
+        #      建议默认0.1不会影响性能
+        probability: 1.0
+
   cloud:
     nacos:
       discovery:
         server-addr: localhost:8848
-    gateway:
-      discovery:
-        locator:
-          #          通过服务发现组件找到其他的微服务
-          lower-case-service-id: true
-          enabled: true
-      routes:
-        - id : user_route
-          uri: lb://user-center
-          predicates:
-            - Path=/users/**
-#            - TimeBetween=上午7:00,下午5:00
-        - id: content_route
-          uri: lb://content-center
-          predicates:
-            - Path=/shares/**,/admin/**
-#          filters:
-#            - AddRequestHeader=X-Request-Foo, Bar
-#            - PreLog=a,b
+
+
 management:
   endpoints:
     web:
